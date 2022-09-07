@@ -7,21 +7,19 @@
 
 
     // #region internal
-    import generateClient from '../client';
+    import clientStore from '../client';
     // #endregion internal
 // #endregion imports
 
 
 
 // #region module
-const client = generateClient();
-
-
 const list = async (
     bucket: string,
     prefix?: string,
     recursive?: boolean,
 ): Promise<ObjectListItem[] | undefined> => {
+    const client = await clientStore.get();
     if (!client) {
         return;
     }
@@ -70,6 +68,7 @@ const obliterate = async (
     bucket: string,
     objects: string[],
 ) => {
+    const client = await clientStore.get();
     if (!client) {
         return;
     }

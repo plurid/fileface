@@ -1,5 +1,6 @@
 // #region imports
     // #region internal
+    import client from './client';
     import object from './object';
     import objects from './objects';
     import bucket from './bucket';
@@ -10,6 +11,7 @@
 
 // #region exports
 export {
+    client,
     object,
     objects,
     bucket,

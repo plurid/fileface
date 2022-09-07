@@ -6,43 +6,66 @@
 
     // #region external
     import {
+        MINIO_GENERATION_TIMEOUT,
         MINIO_END_POINT,
         MINIO_PORT,
         MINIO_ACCESS_KEY,
         MINIO_SECRET_KEY,
     } from '../../data/constants';
+
+    import {
+        ClientData,
+    } from '../../data/interfaces';
     // #endregion external
 // #endregion imports
 
 
 
 // #region module
-let client: Minio.Client | null;
+class Client {
+    private client: Minio.Client | null = null;
+    private generationTimeout: NodeJS.Timeout;
 
-const generateClient = () => {
-    try {
-        if (client) {
-            return client;
+    constructor() {
+        this.generationTimeout = setTimeout(() => {
+            this.generate();
+        }, MINIO_GENERATION_TIMEOUT);
+    }
+
+    public generate(
+        clientData?: ClientData,
+    ) {
+        if (this.generationTimeout) {
+            clearTimeout(this.generationTimeout);
         }
 
-        client = new Minio.Client({
-            endPoint: MINIO_END_POINT,
-            port: MINIO_PORT,
-            accessKey: MINIO_ACCESS_KEY,
-            secretKey: MINIO_SECRET_KEY,
-            useSSL: false,
+        this.client = new Minio.Client({
+            endPoint: clientData?.endPoint || MINIO_END_POINT,
+            port: clientData?.port || MINIO_PORT,
+            accessKey: clientData?.accessKey || MINIO_ACCESS_KEY,
+            secretKey: clientData?.secretKey || MINIO_SECRET_KEY,
+            useSSL: clientData?.useSSL ?? false,
         });
 
         return client;
-    } catch (error) {
-        console.log('Could not generate Minio client.', error);
-        return;
+    }
+
+    public async get() {
+        if (!this.client && this.generationTimeout) {
+            await new Promise((resolve) => {
+                setTimeout(() => resolve(true), MINIO_GENERATION_TIMEOUT + 100);
+            });
+        }
+
+        return this.client;
     }
 }
+
+const client = new Client();
 // #endregion module
 
 
 
 // #region exports
-export default generateClient;
+export default client;
 // #endregion exports

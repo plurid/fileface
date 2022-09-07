@@ -17,17 +17,13 @@
 
 
     // #region internal
-    import generateClient from '../client';
+    import clientStore from '../client';
     // #endregion internal
 // #endregion imports
 
 
 
 // #region module
-const client = generateClient();
-
-
-
 const store = async (
     bucket: string,
     object: string,
@@ -36,6 +32,7 @@ const store = async (
     metadata?: Minio.ItemBucketMetadata,
 ) => {
     try {
+        const client = await clientStore.get();
         if (!client) {
             return;
         }
@@ -61,6 +58,7 @@ const read = async (
     object: string,
     options?: ObjectReadOptions,
 ): Promise<ObjectReadResult | undefined> => {
+    const client = await clientStore.get();
     if (!client) {
         return;
     }
@@ -125,10 +123,11 @@ const read = async (
     );
 }
 
-const readAsStream = (
+const readAsStream = async (
     bucket: string,
     object: string,
 ) => {
+    const client = await clientStore.get();
     if (!client) {
         return;
     }
@@ -147,6 +146,7 @@ const readPartial = async (
     offset: number,
     length?: number,
 ): Promise<ObjectReadResult | undefined> => {
+    const client = await clientStore.get();
     if (!client) {
         return;
     }
@@ -226,6 +226,7 @@ const obliterate = async (
     bucket: string,
     object: string,
 ) => {
+    const client = await clientStore.get();
     if (!client) {
         return;
     }

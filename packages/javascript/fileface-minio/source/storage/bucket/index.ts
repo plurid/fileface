@@ -1,19 +1,17 @@
 // #region imports
     // #region internal
-    import generateClient from '../client';
+    import clientStore from '../client';
     // #endregion internal
 // #endregion imports
 
 
 
 // #region module
-const client = generateClient();
-
-
 const exists = async (
     name: string,
 ) => {
     try {
+        const client = await clientStore.get();
         if (!client) {
             return;
         }
@@ -34,6 +32,7 @@ const generate = async (
     region?: string,
 ) => {
     try {
+        const client = await clientStore.get();
         if (!client) {
             return;
         }
@@ -56,6 +55,7 @@ const obliterate = async (
     name: string,
 ) => {
     try {
+        const client = await clientStore.get();
         if (!client) {
             return;
         }

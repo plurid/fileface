@@ -1,4 +1,5 @@
 // #region module
+export const MINIO_GENERATION_TIMEOUT = parseInt(process.env.MINIO_GENERATION_TIMEOUT || '') || 10_000;
 export const MINIO_END_POINT = process.env.MINIO_END_POINT || '';
 export const MINIO_PORT = parseInt(process.env.MINIO_PORT || '') || 9000;
 export const MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY || '';

@@ -1,4 +1,13 @@
 // #region module
+export interface ClientData {
+    endPoint: string;
+    port: number;
+    accessKey: string;
+    secretKey: string;
+    useSSL?: boolean;
+}
+
+
 export interface ObjectReadOptions {
     asChunks?: boolean;
     encoding?: 'utf8' | 'ascii' | 'utf-8' | 'utf16le' | 'ucs2'
